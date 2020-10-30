@@ -1,9 +1,5 @@
 import pandas as pd
 import numpy as np
-
-def IQR(data,rate=1.5):
-    IQR = (data.quantile(.75)+(data.quantile(.75)- data.quantile(.25))*rate)
-    return IQR
     
 def showOutliers(feature,rate=1.5,count=1):
     '''
