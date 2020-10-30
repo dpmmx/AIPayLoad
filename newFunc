@@ -1,6 +1,15 @@
-import pandas as pd
-import numpy as np
-    
+# Importing the necessary libraries
+import numpy                            as np                        # importing numpy library
+import pandas                           as pd                        # importing pandas library
+import seaborn                          as sns                       # For Data Visualization 
+import matplotlib.pyplot                as plt                       # Necessary module for plotting purpose
+import warnings                                                      # importing warning library
+
+# add graphs into jupiter notebook
+%matplotlib inline                             
+warnings.filterwarnings('ignore')   
+
+# outlier analysis function
 def showOutliers(feature,rate=1.5,count=1):
     '''
     This function provide in-depth analysis of outliers.
