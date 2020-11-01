@@ -10,7 +10,7 @@ import warnings                                                      # importing
 warnings.filterwarnings('ignore')   
 
 # outlier analysis function
-def showOutliers(feature,rate=1.5,count=1):
+def showOutliers(data, feature, rate = 1.5, count = 1):
     '''
     This function provide in-depth analysis of outliers.
     It is useful for quickly analyzing outliers of a column 
@@ -18,7 +18,10 @@ def showOutliers(feature,rate=1.5,count=1):
 
     Parameters
     ----------
-    feature : object, no default
+    data    : pandas dataframe, default = none
+        Pandas dataframe i.e working dataset
+        
+    feature : object, default none
         Column name to select.
     
     rate    : float, default 1.5
@@ -34,20 +37,20 @@ def showOutliers(feature,rate=1.5,count=1):
         present in the column.
         
     '''
-    Q1 = pdData[feature].quantile(0.25)        # evaluating lower / first quartile
-    Q3 = pdData[feature].quantile(0.75)        # evaluating upper / third quartile
+    Q1 = data[feature].quantile(0.25)        # evaluating lower / first quartile
+    Q3 = data[feature].quantile(0.75)        # evaluating upper / third quartile
     IQR = Q3 - Q1                              # evaluating Inter Quartile Range i.e IQR
     #finding outliers which are mild outliers (Lower quartile - 1.5 times IQR) or extreme outliers (Upper quartile + 1.5 times IQR)
-    outliers = pdData[((pdData[feature] < (Q1 - rate * IQR)) |(pdData[feature] > (Q3 + rate * IQR)))][feature]
+    outliers = data[((data[feature] < (Q1 - rate * IQR)) |(data[feature] > (Q3 + rate * IQR)))][feature]
     plt.figure(figsize=(15,3))                 # setting figure size with width = 15 and height = 3
     print("*"*40)
     print("\033[1m{0}. Boxplot of {1} column : \033[0m".format(count,feature))
     print("*"*40)
-    ax = sns.boxplot(x=pdData[feature])        # seaborn boxplot to examine outliers of the feature
+    ax = sns.boxplot(x=data[feature])        # seaborn boxplot to examine outliers of the feature
     plt.pause(0.05)
     # printing mean, median and IQR for the feature
     print("* \033[1mFeature {0} : Mean = {1}, Median = {2} and Inter-Quartile-Range (IQR) = {3}\033[0m"
-          .format(feature,np.mean(pdData[feature]),np.median(pdData[feature]),IQR)
+          .format(feature,np.mean(data[feature]),np.median(data[feature]),IQR)
          )
     print()
     if(outliers.shape[0] == 0):                # comparing if number of outlier is zero
@@ -55,7 +58,7 @@ def showOutliers(feature,rate=1.5,count=1):
     else:                                      # if the above condition is false i.e number of outlier is not zero
         # printing No of outliers, percentage of the data points are outliers and the values of the outliers
         print("* There are \033[1m{0} outliers\033[0m ({1} % of the data points) in \033[1m{2}\033[0m feature and the values are \033[1m{3}\033[0m"
-        .format(outliers.shape[0],round(((outliers.shape[0]/pdData[feature].shape[0])*100),3),feature,outliers.tolist()))
+        .format(outliers.shape[0],round(((outliers.shape[0]/data[feature].shape[0])*100),3),feature,outliers.tolist()))
         print()
     print("*"*125)
     print()
